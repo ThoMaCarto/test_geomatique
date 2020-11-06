@@ -17,6 +17,44 @@
 	
 </head>
 <body>
+<legend>Destination point along great-circle given distance and bearing from start point</legend>
+            <table class="inputs">
+                <tbody><tr>
+                    <td>Start point:</td>
+                    <td>
+                        <input name="lat1" class="lat1" type="text" value="53°19′14″N">,
+                        <input name="lon1" class="lon1" type="text" value="001°43′47″W">
+                    </td>
+                </tr>
+                <tr>
+                    <td>Bearing:</td>
+                    <td><input type="text" name="brng" class="brng" value="096°01′18″"></td>
+                </tr>
+                <tr>
+                    <td>Distance:</td>
+                    <td><input name="dist" class="dist" type="number" step="any" value="124.8"> km</td>
+                </tr>
+            </tbody></table>
+            <table class="outputs">
+                <tbody><tr>
+                    <td>Destination point:</td>
+                    <td><output class="result-point" title="Destination point">53° 11′ 18″ N, 000° 08′ 00″ E</output></td>
+                </tr>
+                <tr>
+                    <td>Final bearing:</td>
+                    <td><output class="result-brng" title="Final bearing (azimuth) arriving at point 2">097° 30′ 52″</output></td>
+                </tr>
+                <tr>
+                    <td>
+                        <p class="toggle-map"><a>view map</a></p>
+                        <p class="toggle-map hide"><a>hide map</a></p>
+                    </td>
+                    <td></td>
+                </tr>
+            </tbody></table>
+            <div id="map-ortho-dest-canvas" class="map hide"></div>
+        
+
 <footer>
 
 <script>
@@ -24,7 +62,7 @@
 var lat1 =; //latitude du point de départ
 var lng1=; //longitude du point de départ
 var d = ; //distance entre le point de départ et le point à créer
-var R = 6378137; //rayon moyen de la planète terre en mètre
+var R = 6378137; //rayon moyen de la planète terre en mètre (peut être plus précis en indiquant le rayon moyen en France si on veut)
 var angle = ; //l'angle (je ne sais pas s'il faut qu'il soit en degré ou dans une autre unité).
 
 ////Calcul du premier point
