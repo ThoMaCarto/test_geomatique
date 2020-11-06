@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>Atlas Innovations Territoires Marges Nouvelle-Aquitaine</title>
+	<meta name="author" content="Thomas Maillard">
+	
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+   integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+   crossorigin=""/>
+      
+   <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+   integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
+   crossorigin=""></script>
+	
+</head>
+<body>
+<footer>
+
+<script>
+//paramètres
+var lat1 =; //latitude du point de départ
+var lng1=; //longitude du point de départ
+var d = ; //distance entre le point de départ et le point à créer
+var R = 6378137; //rayon moyen de la planète terre en mètre
+var angle = ; //l'angle (je ne sais pas s'il faut qu'il soit en degré ou dans une autre unité).
+
+////Calcul du premier point
+//calcul de la latitude:
+const lat2 = Math.asin( Math.sin(lat1)*Math.cos(d/R) + Math.cos(lat1)*Math.sin(d/R)*Math.cos(angle) );
+//calcul de la longitude
+const lng2 = lng1 + Math.atan2(Math.sin(angle)*Math.sin(d/R)*Math.cos(lat1),Math.cos(d/R)-Math.sin(lat1)*Math.sin(lat2));
+
+</script>
+</footer>
+</body>
