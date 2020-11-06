@@ -4,7 +4,7 @@
 
     <meta charset="utf-8" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<title>Atlas Innovations Territoires Marges Nouvelle-Aquitaine</title>
+	<title>Fixed Distance Buffer around one point</title>
 	<meta name="author" content="Thomas Maillard">
 	
 	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
@@ -14,63 +14,87 @@
    <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
    integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
    crossorigin=""></script>
+
+<script>
+// regarder les sources suivantes: http://www.movable-type.co.uk/scripts/latlong.html#dest-point http://www.movable-type.co.uk/scripts/js/latlong.js
+//paramètres
+
+var lat1 = []; //latitude du point de départ
+var lng1 = []; //longitude du point de départ
+var dist =[]; //distance entre le point de départ et le point à créer
+var R = 6378137; //rayon moyen de la planète terre en mètre (peut être plus précis en indiquant le rayon moyen en France si on veut)
+var angle =[]; //l'angle (je ne sais pas s'il faut qu'il soit en degré ou dans une autre unité).
+var segments =[]; //nombre de segments du contour du buffer, nombre de points - 1.
+function saisieInfo(){
+	var lat1 = new document.getElementById("latIn").value;
+	var lng1 = new document.getElementById("lngIn").value;
+	dist.push(document.getElementById("distIn").value);
+	angle.push(document.getElementById("angleIn").value);
+	segments.push(document.getElementById("segmentsIn").value);
+
+};
+////Calcul du premier point
+function calculPoint(){
+//calcul de la latitude:
+var lat2 = new Math.asin( Math.sin(lat1)*Math.cos(dist/R) + Math.cos(lat1)*Math.sin(dist/R)*Math.cos(angle) );
+//calcul de la longitude
+var lng2 = new lng1 + Math.atan2(Math.sin(angle)*Math.sin(dist/R)*Math.cos(lat1),Math.cos(dist/R)-Math.sin(lat1)*Math.sin(lat2));
+document.getElementById("coordonneeFinal").value = new [lat2,lng2]
+}
+</script>
 	
 </head>
 <body>
-<legend>Destination point along great-circle given distance and bearing from start point</legend>
+<h1>Création d'un point en fonction d'une distance et d'un angle à partir d'un point d'origine</h1>
+<legend>Coordonnées d'un point sur le grand cercle en fonction de la distance et de l'angle à partir d'un point d'origine</legend>
+<p><small>Destination point along great-circle given distance and bearing from start point</small></p>
+<p><small>Application de l'algorithme de Harvesine</small></p>
             <table class="inputs">
                 <tbody><tr>
-                    <td>Start point:</td>
+                    <td>Point d'origine - </td>
                     <td>
-                        <input name="lat1" class="lat1" type="text" value="53°19′14″N">,
-                        <input name="lon1" class="lon1" type="text" value="001°43′47″W">
+                        <label>Latitude : </label>
+						<input name="lat1" id="latIn" class="lat1" type="text" value="45"> , <label>longitude : </label>
+                        <input name="lng1" id="lngIn"class="lng1" type="text" value="0">
                     </td>
                 </tr>
                 <tr>
-                    <td>Bearing:</td>
-                    <td><input type="text" name="brng" class="brng" value="096°01′18″"></td>
+                    <td>angle</td>
+                    <td><input type="text" id="angleIn" name="angle" class="angle" value="45"></td>
                 </tr>
                 <tr>
                     <td>Distance:</td>
-                    <td><input name="dist" class="dist" type="number" step="any" value="124.8"> km</td>
+                    <td><input name="dist" id="distIn" class="dist" type="number" step="any" value="124.8"> mètres</td>
                 </tr>
+				<tr>
+					<td>segments :</td>
+					<td><input name="segments" id="segmentsIn" class="segments" type="number" step="any" value="8"> segments</td>
+				</tr>
             </tbody></table>
             <table class="outputs">
                 <tbody><tr>
-                    <td>Destination point:</td>
-                    <td><output class="result-point" title="Destination point">53° 11′ 18″ N, 000° 08′ 00″ E</output></td>
+                    <td>Point créé :</td>
+                    <td><output class="result-point" title="Destination point" id="coordonneeFinal"></output></td>
                 </tr>
                 <tr>
-                    <td>Final bearing:</td>
-                    <td><output class="result-brng" title="Final bearing (azimuth) arriving at point 2">097° 30′ 52″</output></td>
+                    <td>Angle final :</td>
+                    <td><output class="result-brng" title="Final bearing (azimuth) arriving at point 2"></output></td>
                 </tr>
-                <tr>
+                <!--<tr>
                     <td>
-                        <p class="toggle-map"><a>view map</a></p>
-                        <p class="toggle-map hide"><a>hide map</a></p>
+                        <p class="toggle-map"><a>voir la carte</a></p>
+                        <p class="toggle-map hide"><a>cacher la carte</a></p>
                     </td>
                     <td></td>
-                </tr>
+                </tr>-->
             </tbody></table>
             <div id="map-ortho-dest-canvas" class="map hide"></div>
+			<input type ="button" id="bouton" value="saisie" onclick="saisieInfo()"></input>
+			<input type ="button" id="bouton" value="calcul des coordonnées du point" onclick="calculPoint()"></input>
         
 
 <footer>
 
-<script>
-//paramètres
-var lat1 =; //latitude du point de départ
-var lng1=; //longitude du point de départ
-var d = ; //distance entre le point de départ et le point à créer
-var R = 6378137; //rayon moyen de la planète terre en mètre (peut être plus précis en indiquant le rayon moyen en France si on veut)
-var angle = ; //l'angle (je ne sais pas s'il faut qu'il soit en degré ou dans une autre unité).
 
-////Calcul du premier point
-//calcul de la latitude:
-const lat2 = Math.asin( Math.sin(lat1)*Math.cos(d/R) + Math.cos(lat1)*Math.sin(d/R)*Math.cos(angle) );
-//calcul de la longitude
-const lng2 = lng1 + Math.atan2(Math.sin(angle)*Math.sin(d/R)*Math.cos(lat1),Math.cos(d/R)-Math.sin(lat1)*Math.sin(lat2));
-
-</script>
 </footer>
 </body>
